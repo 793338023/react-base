@@ -28,6 +28,7 @@ export default class Home extends Component {
     this.setState({ msg: p });
   };
   render() {
+    console.log(this);
     const { obj, msg } = this.state;
     let a = "11";
     return (

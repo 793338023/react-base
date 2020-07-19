@@ -95,23 +95,35 @@ props 与 context 略过，就是状态
 
 refs 是 class 组件上的让我们存储组件上 ref 值的
 
-updater 才是重点，因为
+updater 才是重点，因为状态的更新就在这里实现，每个组件都有一个更新对象，而里面只实现了更新需要的方法，真正需要更新的数据都存储在 fiber 里面
 
 那么我们在写组件时就会带上默认的属性与方法
 
 ## render
 
-...更新中
+render 用于将 React 渲染的虚拟 DOM 渲染到浏览器 DOM，一般在顶层组件使用。该方法把元素挂载到 container 中，并且返回 element 的实例（即 refs 引用），如果是函数组件，render 会返回 null。当组件装载完毕时，callback 就会被调用。其语法为：
+
+```js
+ReactDOM.render(ReactElement element,DOMElement container,[function callback])
+```
+
+React diff 三大策略
+
+1. 策略一（tree diff）：Web UI 中 DOM 节点跨层级的移动操作特别少，可以忽略不计。（DOM 结构发生改变-----直接卸载并重新加载组件）
+2. 策略二（component diff）：DOM 结构一样-----不会卸载,但是会 update
+3. 策略三（key diff）：比较节点的 key 值，通过 key 来区分重载与更新-----同时遵循 1.2 两点
 
 ## Fiber
 
+fiber 其实可以理解为虚拟 DOM，因为 createElement 创建的虚拟 DOM 会对应到 fiber 上，而 DOM 上更新是根据 fiber 的信息，比如 diff 比较。
+
 进行 render 后会把 createElement 的数据转换成 Fiber 数据结构
 
-requestIdleCallback
+fiber 最大的好处是可暂定可恢复，让 React 实现让出机制，时间分片，使用的 API requestIdleCallback:
 
 React 已经内部实现了 requestIdleCallback，不使用 requestIdleCallback API
 
-...更新中
+**(React16/fiber)[https://793338023.github.io/2020/04/28/React16-fiber/]**
 
 ## js 事件循环机制
 
